@@ -5,7 +5,18 @@ const printerConfig = {
     type: 'tcp', // tcp, usb, serial
     host: '192.168.1.100', // IP của máy in (thay đổi theo máy in thực tế)
     port: 9100, // Port mặc định cho Zebra printer
-    timeout: 5000
+    timeout: 5000,
+    
+    // Cấu hình USB (cho Linux/Windows)
+    usb: {
+      // Linux: thường là /dev/usb/lp0, /dev/usb/lp1
+      // Windows: thường là LPT1, LPT2 hoặc USB001, USB002
+      device: '/dev/usb/lp0', // Đường dẫn device USB
+      vendorId: 0x0a5f, // Vendor ID của Zebra (0x0a5f)
+      productId: 0x0193, // Product ID của ZT411
+      interface: 0, // USB interface number
+      endpoint: 0x01 // USB endpoint
+    }
   },
   
   // Cấu hình máy in Zebra

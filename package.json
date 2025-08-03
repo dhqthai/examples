@@ -5,14 +5,22 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node test-printer.js"
+    "test": "node test-printer.js",
+    "usb": "node usb-scanner.js"
   },
   "dependencies": {
-    "node-thermal-printer": "^4.4.4",
+    "fs": "^0.0.1-security",
     "net": "^1.0.2",
-    "fs": "^0.0.1-security"
+    "node-thermal-printer": "^4.4.4",
+    "serialport": "^12.0.0",
+    "usb": "^2.16.0"
   },
-  "keywords": ["printer", "thermal", "zebra", "test"],
+  "keywords": [
+    "printer",
+    "thermal",
+    "zebra",
+    "test"
+  ],
   "author": "",
   "license": "MIT"
 }

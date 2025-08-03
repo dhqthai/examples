@@ -5,6 +5,8 @@
 ## 📋 Tính năng
 
 - ✅ Test kết nối máy in qua TCP/IP
+- 🔌 **HỖ TRỢ KẾT NỐI USB** (mới)
+- 🔗 Hỗ trợ kết nối Serial
 - 🔍 Kiểm tra trạng thái máy in  
 - 📝 In các loại dữ liệu khác nhau:
   - Text đơn giản
@@ -12,6 +14,7 @@
   - Receipt/Hóa đơn
 - 🎛️ Giao diện menu tương tác
 - ⚙️ Cấu hình linh hoạt
+- 🔍 Tự động phát hiện USB devices
 - 📊 Báo cáo kết quả chi tiết
 
 ## 🛠️ Cài đặt
@@ -26,6 +29,11 @@ cd printer-test
 ```bash
 npm install
 ```
+
+**Lưu ý cho kết nối USB:**
+- **Linux**: Có thể cần chạy với quyền sudo: `sudo npm test`
+- **Windows**: Cần cài đặt WinUSB driver hoặc libusb-win32
+- **macOS**: Có thể cần cài đặt libusb: `brew install libusb`
 
 3. **Cấu hình máy in**
 Chỉnh sửa file `printer-config.js`:
@@ -56,6 +64,13 @@ npm test
 node test-printer.js
 ```
 
+### USB Scanner (Quét USB devices)
+```bash
+npm run usb
+# hoặc
+node usb-scanner.js
+```
+
 ## 📁 Cấu trúc file
 
 ```
@@ -65,6 +80,7 @@ printer-test/
 ├── printer-utils.js      # Utils kết nối và gửi lệnh ZPL
 ├── test-printer.js       # Chương trình test với menu tương tác
 ├── index.js              # Quick test script
+├── usb-scanner.js        # USB device scanner utility 🔌
 └── README.md             # Hướng dẫn sử dụng
 ```
 
@@ -109,17 +125,39 @@ Có sẵn 4 loại dữ liệu test:
 5. In tất cả dữ liệu test
 6. Cấu hình máy in
 7. Tạo và in dữ liệu tùy chỉnh
+8. Thay đổi loại kết nối (TCP/USB) 🔌
+9. Quét USB devices 🔍
 0. Thoát
 ==================================================
 ```
 
+## 🔌 Kết nối USB
+
+### Các phương pháp kết nối USB:
+
+1. **Tự động phát hiện**: Tự động quét và hiển thị các printer USB
+2. **Thủ công**: Nhập Vendor ID và Product ID
+3. **Device path**: Sử dụng đường dẫn device (Linux: /dev/usb/lp0)
+
+### Thông tin USB cho Zebra ZT411:
+- **Vendor ID**: 0x0a5f (Zebra Technologies)  
+- **Product ID**: 0x0193 (ZT411)
+- **Device Path (Linux)**: /dev/usb/lp0 hoặc /dev/usb/lp1
+
 ## 🔧 Troubleshooting
 
-### Lỗi kết nối
+### Lỗi kết nối TCP/IP
 - Kiểm tra IP máy in có đúng không
 - Đảm bảo máy in đã bật và kết nối mạng
 - Kiểm tra port 9100 có mở không
 - Ping thử địa chỉ IP máy in
+
+### Lỗi kết nối USB
+- **Linux**: Chạy với quyền sudo: `sudo npm test`
+- **Windows**: Cài đặt driver USB (Zebra driver hoặc WinUSB)
+- Kiểm tra cable USB và kết nối
+- Sử dụng `lsusb` (Linux) hoặc Device Manager (Windows) để xác nhận device
+- Thử các USB port khác nhau
 
 ### Lỗi in
 - Kiểm tra giấy in có đủ không
@@ -127,6 +165,8 @@ Có sẵn 4 loại dữ liệu test:
 - Kiểm tra cài đặt máy in (ZPL mode)
 
 ### Commands test thủ công
+
+**TCP/IP:**
 ```bash
 # Test ping máy in
 ping 192.168.1.100
@@ -136,6 +176,21 @@ telnet 192.168.1.100 9100
 
 # Gửi lệnh ZPL test qua telnet
 echo "^XA^CF0,30^FO50,50^FDTEST^FS^XZ" | nc 192.168.1.100 9100
+```
+
+**USB:**
+```bash
+# Linux: Liệt kê USB devices
+lsusb
+
+# Linux: Kiểm tra USB printer devices
+ls -la /dev/usb/lp*
+
+# Linux: Gửi test command trực tiếp
+echo "^XA^CF0,30^FO50,50^FDTEST^FS^XZ" > /dev/usb/lp0
+
+# Windows: Kiểm tra USB devices
+wmic path win32_usbhub get caption,description
 ```
 
 ## 📝 ZPL Commands
