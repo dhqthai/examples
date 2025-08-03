@@ -1,0 +1,18 @@
+{
+  "name": "printer-test",
+  "version": "1.0.0",
+  "description": "Simple Node.js application to test thermal printer functionality",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test-printer.js"
+  },
+  "dependencies": {
+    "node-thermal-printer": "^4.4.4",
+    "net": "^1.0.2",
+    "fs": "^0.0.1-security"
+  },
+  "keywords": ["printer", "thermal", "zebra", "test"],
+  "author": "",
+  "license": "MIT"
+}
